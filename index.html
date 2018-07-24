@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Particle World</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="Stats.min.js"></script>
+  <script src="world.js"></script>
+  <script src="particle.js"></script>
+</head>
+
+<body>
+  <div id="canvas-wrapper"></div>
+
+  <script>
+    // 状态栏
+    var stats = new Stats();
+		stats.setMode(0);
+		stats.domElement.style.position = 'absolute';
+		stats.domElement.style.right = '0px';
+		stats.domElement.style.top = '0px';
+		document.body.appendChild( stats.domElement );
+
+    // 生成随机数
+    function rand(left, right) {
+      if (right === undefined) {
+        return rand(0, left)
+      }
+      return left + Math.random() * (right - left)
+    }
+
+    function randColor(){
+      return '#'+Math.floor(Math.random()*0xffffff).toString(16);
+    }
+
+
+    var world = new World(
+      '#canvas-wrapper',
+      {
+        width: '600px',
+        height: '600px',
+      }
+    )
+
+    world.on('render', function(){
+      stats.update()
+    })
+
+    world.run()
+
+    // 添加粒子
+    for (var i = 0; i < 10000; i++) {
+      var p = new Particle(rand(250, 350), rand(250, 350), 1, rand(-100, 100), rand(-100, 100), randColor())
+      world.appendParticle(p)
+    }
+
+  </script>
+</body>
+
+</html>
